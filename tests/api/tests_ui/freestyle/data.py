@@ -7,7 +7,7 @@ class CronTimer:
     every_minute: dict[str, str | int] = {
         "timer": "*/1 * * * *",
         "schedule": "1 min",
-        "timeout": 60
+        "timeout": 180
     }
     every_two_minutes: dict[str, str | int] = {
         "timer": "H/2 * * * *",
@@ -31,14 +31,14 @@ class Config:
                 <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
                 <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
                 <triggers>
-                    <hudson.triggers.TimerTrigger>
-                    <spec>{timer}</spec>
-                    </hudson.triggers.TimerTrigger>
+                  <hudson.triggers.TimerTrigger>
+                  <spec>{timer}</spec>
+                  </hudson.triggers.TimerTrigger>
                 </triggers>
                 <concurrentBuild>false</concurrentBuild>
                 <builders>
                   <hudson.tasks.Shell>
-                    <command>echo ID=$(date +%s | cut -c1-2)
+                    <command>
                     sleep 35
                     </command>
                   </hudson.tasks.Shell>

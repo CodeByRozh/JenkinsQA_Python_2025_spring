@@ -1,3 +1,5 @@
+import time
+
 import allure
 import logging
 
@@ -18,7 +20,7 @@ class FreestyleProjectPage(BasePage):
         CONFIGURE_MENU_ITEM = (By.LINK_TEXT, 'Configure')
         DESCRIPTION = (By.ID, 'description')
         MENU_ITEMS = (By.XPATH, '//div[@class="task "]')
-        BUILDS_LINK = (By.CSS_SELECTOR, "#jenkins-build-history>div>span~div a")
+        BUILDS_LINK = (By.CSS_SELECTOR, ".app-builds-container__item")
 
     def __init__(self, driver, project_name, timeout=5):
         super().__init__(driver, timeout=timeout)
@@ -65,12 +67,11 @@ class FreestyleProjectPage(BasePage):
         return [item.text for item in self.wait_to_be_visible_all(self.Locators.MENU_ITEMS)]
 
     @allure.step("Wait up to {timeout} seconds for the build to appear in the build history.")
-    def wait_for_build_execution(self, timeout):
-        with allure.step("Wait for 'Builds' link to be visible"):
-            build_link = self.wait_for_element(self.Locators.BUILDS_LINK, timeout)
-            if not build_link:
-                logger.error(f"'Builds' link was not found within {timeout} seconds.")
-            else:
-                logger.info(f"'Builds' link appeared within {timeout} seconds.")
+    def wait_for_build_execution(self, timeout=60):
+        logger.info("Waiting 60 seconds before counting builds...")
+        time.sleep(180)
 
+        builds = self.find_elements(*self.Locators.BUILDS_LINK)
+        count = len(builds)
+        logger.info(f"{count} build(s) appeared after {timeout} seconds.")
         return self
